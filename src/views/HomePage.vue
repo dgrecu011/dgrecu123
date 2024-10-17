@@ -1,25 +1,36 @@
 <template>
   <div class="container mx-auto p-4">
-    
     <section class="text-center py-12 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white rounded-lg">
       <h1 class="text-4xl font-bold">Welcome to Our iPhone Store!</h1>
       <p class="mt-4 text-lg">Discover the latest iPhones with exclusive offers and discounts.</p>
     </section>
 
- 
     <section class="my-12">
       <h2 class="text-3xl font-semibold text-center mb-6">Featured Products</h2>
       <div class="flex justify-center mb-4">
-        <select v-model="sortOption" @change="sortProducts" class="p-2 bg-transparent rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200 ease-in-out hover:bg-indigo-100">
-
+        <div class="relative">
+          <input
+            type="text"
+            v-model="searchQuery"
+            placeholder="Search products..."
+            class="p-2 pl-10 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200 ease-in-out"
+          />
+          <span class="absolute left-3 top-1/2 transform -translate-y-1/2">
+            <svg class="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M10 4a6 6 0 100 12 6 6 0 000-12z" />
+            </svg>
+          </span>
+        </div>
+        <select v-model="sortOption" @change="sortProducts" class="p-2 bg-transparent rounded-lg shadow-md ml-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200 ease-in-out hover:bg-indigo-100">
           <option value="name">Sort by Name</option>
           <option value="priceLowToHigh">Sort by Price: Low to High</option>
           <option value="priceHighToLow">Sort by Price: High to Low</option>
         </select>
       </div>
+
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div
-          v-for="product in sortedProducts"
+          v-for="product in filteredProducts"
           :key="product.id"
           class="bg-white shadow-md rounded-lg p-4 hover:shadow-xl transition-shadow duration-300"
         >
@@ -45,7 +56,6 @@
       </div>
     </section>
 
-   
     <section class="bg-gray-100 py-12 mt-16">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div class="bg-gradient-to-r from-green-400 to-blue-500 p-8 text-white rounded-lg shadow-lg">
@@ -76,12 +86,18 @@ export default {
       products: [],
       addedToCart: null,
       sortOption: "name",
+      searchQuery: "",
     };
   },
   computed: {
     ...mapGetters(["cart"]),
+    filteredProducts() {
+      return this.products.filter(product => 
+        product.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    },
     sortedProducts() {
-      return [...this.products].sort((a, b) => {
+      return [...this.filteredProducts].sort((a, b) => {
         if (this.sortOption === "name") {
           return a.name.localeCompare(b.name);
         } else if (this.sortOption === "priceLowToHigh") {
@@ -122,9 +138,7 @@ export default {
     updateColor(product, color) {
       product.selectedColor = color;
     },
-    sortProducts() {
-     
-    },
+    sortProducts() {},
   },
   mounted() {
     this.fetchProducts();

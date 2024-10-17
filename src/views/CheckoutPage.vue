@@ -1,6 +1,5 @@
 <template>
   <div class="container mx-auto p-6">
-  
     <section
       class="text-center py-12 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white rounded-lg"
     >
@@ -37,7 +36,7 @@
                 Color: {{ hexToColor(item.selectedColor) }}
               </p>
               <p class="text-gray-600">
-                Price: {{ formatPrice(item.discountPrice || item.price) }} RON
+                Price: <span class="text-xl font-bold text-blue-600">{{ formatPrice(item.discountPrice || item.price) }} RON</span>
               </p>
               <p class="text-gray-600">Quantity: {{ item.quantity }}</p>
             </div>
@@ -46,6 +45,7 @@
       </div>
 
       <div class="mt-8">
+        <h3 class="text-2xl font-semibold mb-4">Total Price: <span class="text-3xl font-bold text-blue-600">{{ formatPrice(totalPrice) }} RON</span></h3>
         <h3 class="text-2xl font-semibold mb-4">Shipping Information</h3>
         <form
           @submit.prevent="placeOrder"
@@ -139,7 +139,13 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["cart", "totalPrice"]),
+    ...mapGetters(["cart"]),
+    totalPrice() {
+      return this.cart.reduce((total, item) => {
+        const price = item.discountPrice || item.price;
+        return total + price * item.quantity;
+      }, 0);
+    },
   },
   methods: {
     hexToColor(hex) {
@@ -169,12 +175,8 @@ export default {
     },
 
     placeOrder() {
-     
       this.$store.commit("removeAllFromCart");
-
-    
       this.showModal = true;
-
 
       setTimeout(() => {
         this.redirectNow();

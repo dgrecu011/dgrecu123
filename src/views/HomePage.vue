@@ -30,7 +30,7 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div
-          v-for="product in filteredProducts"
+          v-for="product in sortedProducts"
           :key="product.id"
           class="bg-white shadow-md rounded-lg p-4 hover:shadow-xl transition-shadow duration-300"
         >
@@ -92,7 +92,7 @@ export default {
   computed: {
     ...mapGetters(["cart"]),
     filteredProducts() {
-      return this.products.filter(product => 
+      return this.products.filter(product =>
         product.name.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
     },
@@ -138,7 +138,6 @@ export default {
     updateColor(product, color) {
       product.selectedColor = color;
     },
-    sortProducts() {},
   },
   mounted() {
     this.fetchProducts();

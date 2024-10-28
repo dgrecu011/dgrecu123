@@ -42,6 +42,14 @@
               Login
             </router-link>
           </li>
+          <li v-if="isLoggedIn && isAdmin">
+            <router-link
+              to="/admin"
+              class="hover:text-yellow-400 transition duration-300 ease-in-out"
+            >
+              Admin
+            </router-link>
+          </li>
         </ul>
       </nav>
 
@@ -105,6 +113,11 @@ export default {
     isLoggedIn() {
       return this.$store.getters.isLoggedIn;
     },
+    isAdmin() {
+      const role = this.$store.getters.userRole;
+      console.log("User Role:", role); // Debugging
+      return role === 'admin';
+    },
   },
   methods: {
     toggleDropdown() {
@@ -123,5 +136,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

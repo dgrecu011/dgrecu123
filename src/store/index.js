@@ -9,10 +9,11 @@ export default createStore({
     setLoggedInUser(state, user) {
       state.loggedInUser = user;
       if (user) {
-        localStorage.setItem("cart", JSON.stringify(state.cart));
+        localStorage.setItem("loggedInUser", JSON.stringify(user));
       } else {
-        localStorage.removeItem("cart");
+        localStorage.removeItem("loggedInUser");
         state.cart = [];
+        localStorage.removeItem("cart");
       }
     },
     logoutUser(state) {
@@ -83,6 +84,12 @@ export default createStore({
     },
     isLoggedIn(state) {
       return !!state.loggedInUser;
+    },
+    userRole(state) {
+      return state.loggedInUser ? state.loggedInUser.role : null;
+    },
+    isAdmin(state) {
+      return state.loggedInUser && state.loggedInUser.role === 'admin';
     },
     totalPrice(state) {
       return state.cart.reduce(

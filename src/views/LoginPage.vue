@@ -1,16 +1,10 @@
 <template>
   <div class="container mx-auto p-4">
-    
-    <section
-      class="text-center py-12 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 text-white rounded-lg"
-    >
+    <section class="text-center py-12 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 text-white rounded-lg">
       <h1 class="text-4xl font-bold">Autentificare</h1>
-      <p class="mt-4 text-lg">
-        Conectează-te la contul tău pentru a accesa toate funcționalitățile!
-      </p>
+      <p class="mt-4 text-lg">Conectează-te la contul tău pentru a accesa toate funcționalitățile!</p>
     </section>
 
-    
     <section class="my-12 bg-gray-100 p-6 rounded-lg shadow-lg">
       <form @submit.prevent="login" class="space-y-4">
         <div>
@@ -42,13 +36,10 @@
       </form>
       <p class="mt-4 text-center">
         Nu ai un cont?
-        <router-link to="/register" class="text-blue-600 hover:underline">
-          Înscrie-te acum!
-        </router-link>
+        <router-link to="/register" class="text-blue-600 hover:underline">Înscrie-te acum!</router-link>
       </p>
     </section>
 
-    
     <div v-if="error" class="mt-4 text-red-600 text-center">
       {{ error }}
     </div>
@@ -73,7 +64,7 @@ export default {
 
       if (user) {
         this.$store.dispatch("loginUser", user);
-        const redirect = this.$route.query.redirect || '/';
+        const redirect = user.role === 'admin' ? '/admin' : (this.$route.query.redirect || '/');
         this.$router.push(redirect);
       } else {
         this.error = "Email sau parolă incorectă.";

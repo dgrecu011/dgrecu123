@@ -52,7 +52,7 @@ export default {
   methods: {
     async fetchProducts() {
       try {
-        const response = await fetch("http://localhost:3000/products");
+        const response = await fetch("https://raw.githubusercontent.com/dgrecu011/iphone-store-api/refs/heads/main/db.json");
         this.products = await response.json();
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -65,7 +65,7 @@ export default {
           price: parseFloat(this.newProductPrice),
         };
         try {
-          await fetch("http://localhost:3000/products", {
+          await fetch("https://raw.githubusercontent.com/dgrecu011/iphone-store-api/refs/heads/main/db.json", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -82,7 +82,7 @@ export default {
     },
     async removeProduct(productId) {
       try {
-        await fetch(`http://localhost:3000/products/${productId}`, {
+        await fetch(`https://raw.githubusercontent.com/dgrecu011/iphone-store-api/refs/heads/main/db.json/${productId}`, {
           method: "DELETE",
         });
         this.fetchProducts(); // Refresh the product list

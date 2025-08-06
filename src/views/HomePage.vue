@@ -112,7 +112,7 @@ export default {
     ...mapActions(["addToCartAction"]),
     async fetchProducts() {
       try {
-        const response = await fetch("http://localhost:3000/products");
+        const response = await fetch("https://raw.githubusercontent.com/dgrecu011/iphone-store-api/refs/heads/main/db.json");
         this.products = await response.json();
         this.products.forEach((product) => {
           if (!product.selectedColor) {

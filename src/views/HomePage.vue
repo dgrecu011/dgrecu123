@@ -111,18 +111,20 @@ export default {
   methods: {
     ...mapActions(["addToCartAction"]),
     async fetchProducts() {
-      try {
-        const response = await fetch("https://raw.githubusercontent.com/dgrecu011/iphone-store-api/refs/heads/main/db.json");
-        this.products = await response.json();
-        this.products.forEach((product) => {
-          if (!product.selectedColor) {
-            product.selectedColor = product.colors[0];
-          }
-        });
-      } catch (error) {
-        console.error("Error fetching products:", error);
+  try {
+    const response = await fetch("https://raw.githubusercontent.com/dgrecu011/iphone-store-api/refs/heads/main/db.json");
+    const data = await response.json();
+    this.products = data.products;
+    this.products.forEach((product) => {
+      if (!product.selectedColor) {
+        product.selectedColor = product.colors[0];
       }
-    },
+    });
+  } catch (error) {
+    console.error("Error fetching products:", error);
+  }
+}
+,
     addToCart(product) {
       const color = product.selectedColor ? product.selectedColor.toLowerCase() : null;
       const productToAdd = { ...product, selectedColor: color };

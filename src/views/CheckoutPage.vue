@@ -22,36 +22,43 @@
         <div
           v-for="item in cart"
           :key="`${item.id}-${item.selectedColor}`"
-          class="flex items-start justify-between bg-white p-4 rounded-lg shadow-md"
+          class="flex flex-col md:flex-row items-start bg-white p-4 rounded-lg shadow-md"
         >
-          <div class="flex items-center">
-            <img
-              :src="item.image"
-              :alt="item.name"
-              class="w-24 h-24 object-cover rounded-lg mr-4"
-            />
-            <div>
-              <h3 class="text-xl font-semibold">{{ item.name }}</h3>
-              <p class="text-gray-600">
-                Color: {{ hexToColor(item.selectedColor) }}
-              </p>
-              <p class="text-gray-600">
-                Price: <span class="text-xl font-bold text-blue-600">{{ formatPrice(item.discountPrice || item.price) }} RON</span>
-              </p>
-              <p class="text-gray-600">Quantity: {{ item.quantity }}</p>
-            </div>
+          <img
+            :src="item.image"
+            :alt="item.name"
+            class="w-full md:w-24 h-24 object-cover rounded-lg mb-4 md:mb-0 md:mr-4"
+          />
+          <div>
+            <h3 class="text-xl font-semibold">{{ item.name }}</h3>
+            <p class="text-gray-600">
+              Color: {{ hexToColor(item.selectedColor) }}
+            </p>
+            <p class="text-gray-600">
+              Price:
+              <span class="text-xl font-bold text-blue-600">
+                {{ formatPrice(item.discountPrice || item.price) }} RON
+              </span>
+            </p>
+            <p class="text-gray-600">Quantity: {{ item.quantity }}</p>
           </div>
         </div>
       </div>
 
       <div class="mt-8">
-        <h3 class="text-2xl font-semibold mb-4">Total Price: <span class="text-3xl font-bold text-blue-600">{{ formatPrice(totalPrice) }} RON</span></h3>
+        <h3 class="text-2xl font-semibold mb-4">
+          Total Price:
+          <span class="text-3xl font-bold text-blue-600">
+            {{ formatPrice(totalPrice) }} RON
+          </span>
+        </h3>
+
         <h3 class="text-2xl font-semibold mb-4">Shipping Information</h3>
         <form
           @submit.prevent="placeOrder"
-          class="bg-white p-4 rounded-lg shadow-md"
+          class="bg-white p-4 rounded-lg shadow-md space-y-4"
         >
-          <div class="mb-4">
+          <div>
             <label class="block text-gray-700">Name:</label>
             <input
               type="text"
@@ -60,7 +67,7 @@
               required
             />
           </div>
-          <div class="mb-4">
+          <div>
             <label class="block text-gray-700">Address:</label>
             <input
               type="text"
@@ -69,7 +76,7 @@
               required
             />
           </div>
-          <div class="mb-4">
+          <div>
             <label class="block text-gray-700">City:</label>
             <input
               type="text"
@@ -78,7 +85,7 @@
               required
             />
           </div>
-          <div class="mb-4">
+          <div>
             <label class="block text-gray-700">Payment Method:</label>
             <select
               v-model="shippingInfo.paymentMethod"
@@ -92,7 +99,7 @@
           </div>
           <button
             type="submit"
-            class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300"
+            class="w-full md:w-auto bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300"
           >
             Place Order
           </button>
@@ -103,9 +110,9 @@
     <transition name="fade">
       <div
         v-if="showModal"
-        class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
+        class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center px-4"
       >
-        <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+        <div class="bg-white p-6 rounded-lg shadow-lg text-center w-full max-w-md">
           <h2 class="text-2xl font-semibold">Order Placed Successfully!</h2>
           <p class="mt-4">
             Your order has been placed. You will be redirected to the homepage
@@ -113,7 +120,7 @@
           </p>
           <button
             @click="redirectNow"
-            class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            class="mt-4 w-full md:w-auto bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
             Go to Homepage Now
           </button>
@@ -185,7 +192,7 @@ export default {
 
     redirectNow() {
       this.showModal = false;
-      this.$router.push("/"); 
+      this.$router.push("/");
     },
   },
 };
@@ -200,7 +207,8 @@ export default {
 .fade-leave-active {
   transition: opacity 0.5s;
 }
-.fade-enter, .fade-leave-to {
+.fade-enter,
+.fade-leave-to {
   opacity: 0;
 }
 </style>

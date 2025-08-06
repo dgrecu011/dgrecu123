@@ -7,26 +7,34 @@
 
     <section class="my-12">
       <h2 class="text-3xl font-semibold text-center mb-6">Featured Products</h2>
-      <div class="flex justify-center mb-4">
-        <div class="relative">
-          <input
-            type="text"
-            v-model="searchQuery"
-            placeholder="Search products..."
-            class="p-2 pl-10 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200 ease-in-out"
-          />
-          <span class="absolute left-3 top-1/2 transform -translate-y-1/2">
-            <svg class="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M10 4a6 6 0 100 12 6 6 0 000-12z" />
-            </svg>
-          </span>
-        </div>
-        <select v-model="sortOption" class="p-2 bg-transparent rounded-lg shadow-md ml-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200 ease-in-out hover:bg-indigo-100">
-          <option value="name">Sort by Name</option>
-          <option value="priceLowToHigh">Sort by Price: Low to High</option>
-          <option value="priceHighToLow">Sort by Price: High to Low</option>
-        </select>
-      </div>
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-center gap-4 mb-6 mt-6 px-2">
+  <div class="relative w-full sm:w-auto">
+    <input
+      type="text"
+      v-model="searchQuery"
+      placeholder="🔍 Search products..."
+      class="w-full sm:w-72 p-3 pl-10 border border-gray-300 rounded-xl shadow focus:outline-none focus:ring-2 focus:ring-indigo-500"
+    />
+    <span class="absolute left-3 top-1/2 transform -translate-y-1/2">
+      <svg class="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M21 21l-4.35-4.35M10 4a6 6 0 100 12 6 6 0 000-12z" />
+      </svg>
+    </span>
+  </div>
+
+  <div>
+    <select
+      v-model="sortOption"
+      class="w-full sm:w-auto p-3 bg-white border border-gray-300 rounded-xl shadow focus:outline-none focus:ring-2 focus:ring-indigo-500"
+    >
+      <option value="name">Sort by Name</option>
+      <option value="priceLowToHigh">Price: Low to High</option>
+      <option value="priceHighToLow">Price: High to Low</option>
+    </select>
+  </div>
+</div>
+
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div

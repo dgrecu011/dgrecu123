@@ -17,7 +17,7 @@ app.use(store);
 
 
 axios
-  .get("http://localhost:3000/products") 
+  .get("https://raw.githubusercontent.com/dgrecu011/iphone-store-api/main/db.json") 
   .then((response) => {
     console.log(response.data); 
   })

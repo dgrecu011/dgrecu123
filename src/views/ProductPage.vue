@@ -38,7 +38,7 @@
                   'border border-black':
                     color.toLowerCase() === 'white' ||
                     color.toLowerCase() === 'lightgray',
-                  'ring ring-blue-500': selectedColor === color,
+                  'ring ring-blue-500': selectedColor === color.toLowerCase(),
                 }"
                 @click="selectColor(color)"
               ></button>
@@ -58,12 +58,10 @@
       </div>
     </div>
 
-    
     <div v-else class="text-center">
       <p>Se încarcă produsul...</p>
     </div>
 
-  
     <div v-if="product" class="mt-8">
       <h2 class="text-2xl font-bold text-gray-800">Specificații</h2>
       <ul class="list-disc ml-5 mt-2">
@@ -77,7 +75,6 @@
       </ul>
     </div>
 
-    
     <div v-if="similarProducts.length" class="mt-8">
       <h2 class="text-2xl font-bold text-gray-800">Produse similare</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -139,13 +136,13 @@ export default {
       }
       const productWithColor = {
         ...this.product,
-        selectedColor: this.selectedColor.toLowerCase(),
+        selectedColor: this.selectedColor,
       };
 
       const existingProduct = this.$store.getters.cart.find(
         (item) =>
           item.id === productWithColor.id &&
-          item.selectedColor.toLowerCase() === productWithColor.selectedColor
+          item.selectedColor === productWithColor.selectedColor
       );
 
       if (existingProduct) {
@@ -166,11 +163,20 @@ export default {
     fetchProduct() {
       const productId = this.$route.params.id;
       axios
-        .get(`http://localhost:3000/products/${productId}`)
+        .get(
+          `https://raw.githubusercontent.com/dgrecu011/iphone-store-api/main/db.json`
+        )
         .then((response) => {
-          this.product = response.data;
-          this.selectedColor = this.product.colors[0].toLowerCase();
-          this.fetchSimilarProducts();
+          const allProducts = response.data.products || [];
+          this.product = allProducts.find(
+            (p) => p.id.toString() === productId.toString()
+          );
+          if (this.product) {
+            this.selectedColor = this.product.colors[0].toLowerCase();
+            this.fetchSimilarProducts();
+          } else {
+            console.error("Produsul nu a fost găsit");
+          }
         })
         .catch((error) => {
           console.error("Eroare la obținerea produsului:", error);
@@ -178,10 +184,15 @@ export default {
     },
     fetchSimilarProducts() {
       axios
-        .get(`http://localhost:3000/products?category=${this.product.category}`)
+        .get(
+          `https://raw.githubusercontent.com/dgrecu011/iphone-store-api/main/db.json`
+        )
         .then((response) => {
-          this.similarProducts = response.data.filter(
-            (item) => item.id !== this.product.id
+          const allProducts = response.data.products || [];
+          this.similarProducts = allProducts.filter(
+            (item) =>
+              item.category === this.product.category &&
+              item.id !== this.product.id
           );
         })
         .catch((error) => {
@@ -195,6 +206,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

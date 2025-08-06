@@ -52,43 +52,29 @@ export default {
   methods: {
     async fetchProducts() {
       try {
-        const response = await fetch("https://raw.githubusercontent.com/dgrecu011/iphone-store-api/refs/heads/main/db.json");
-        this.products = await response.json();
+        const response = await fetch("https://raw.githubusercontent.com/dgrecu011/iphone-store-api/main/db.json");
+        const data = await response.json();
+        this.products = data.products || [];
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     },
-    async addProduct() {
+    addProduct() {
       if (this.newProductName && this.newProductPrice) {
         const newProduct = {
+          id: Date.now(), 
           name: this.newProductName,
           price: parseFloat(this.newProductPrice),
         };
-        try {
-          await fetch("https://raw.githubusercontent.com/dgrecu011/iphone-store-api/refs/heads/main/db.json", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newProduct),
-          });
-          this.fetchProducts(); // Refresh the product list
-          this.newProductName = "";
-          this.newProductPrice = null;
-        } catch (error) {
-          console.error("Error adding product:", error);
-        }
+        this.products.push(newProduct);
+        this.newProductName = "";
+        this.newProductPrice = null;
+        alert("Product added locally (not saved on server)");
       }
     },
-    async removeProduct(productId) {
-      try {
-        await fetch(`https://raw.githubusercontent.com/dgrecu011/iphone-store-api/refs/heads/main/db.json/${productId}`, {
-          method: "DELETE",
-        });
-        this.fetchProducts(); // Refresh the product list
-      } catch (error) {
-        console.error("Error removing product:", error);
-      }
+    removeProduct(productId) {
+      this.products = this.products.filter(product => product.id !== productId);
+      alert("Product removed locally (not deleted from server)");
     },
     formatPrice(price) {
       return price.toFixed(2);

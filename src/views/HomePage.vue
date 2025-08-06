@@ -21,7 +21,7 @@
             </svg>
           </span>
         </div>
-        <select v-model="sortOption" @change="sortProducts" class="p-2 bg-transparent rounded-lg shadow-md ml-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200 ease-in-out hover:bg-indigo-100">
+        <select v-model="sortOption" class="p-2 bg-transparent rounded-lg shadow-md ml-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200 ease-in-out hover:bg-indigo-100">
           <option value="name">Sort by Name</option>
           <option value="priceLowToHigh">Sort by Price: Low to High</option>
           <option value="priceHighToLow">Sort by Price: High to Low</option>
@@ -111,20 +111,19 @@ export default {
   methods: {
     ...mapActions(["addToCartAction"]),
     async fetchProducts() {
-  try {
-    const response = await fetch("https://raw.githubusercontent.com/dgrecu011/iphone-store-api/refs/heads/main/db.json");
-    const data = await response.json();
-    this.products = data.products;
-    this.products.forEach((product) => {
-      if (!product.selectedColor) {
-        product.selectedColor = product.colors[0];
+      try {
+        const response = await fetch("https://raw.githubusercontent.com/dgrecu011/iphone-store-api/main/db.json");
+        const data = await response.json();
+        this.products = data.products;
+        this.products.forEach((product) => {
+          if (!product.selectedColor) {
+            product.selectedColor = product.colors[0];
+          }
+        });
+      } catch (error) {
+        console.error("Error fetching products:", error);
       }
-    });
-  } catch (error) {
-    console.error("Error fetching products:", error);
-  }
-}
-,
+    },
     addToCart(product) {
       const color = product.selectedColor ? product.selectedColor.toLowerCase() : null;
       const productToAdd = { ...product, selectedColor: color };

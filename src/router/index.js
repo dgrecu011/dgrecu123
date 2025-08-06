@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 import HomePage from "../views/HomePage.vue";
 import ProductPage from "../views/ProductPage.vue";
 import LoginPage from "../views/LoginPage.vue";
@@ -25,7 +25,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes,
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
@@ -36,11 +36,9 @@ const router = createRouter({
   },
 });
 
-
 router.beforeEach((to, from, next) => {
   const isAdmin = store.getters.isAdmin;
   if (to.matched.some(record => record.meta.requiresAdmin) && !isAdmin) {
-   
     next({ name: 'Login' }); 
   } else {
     next(); 
